@@ -10,10 +10,17 @@ game.PlayerEntity = me.Entity.extend({
                     return(new me.Rect(0, 0, 64, 64)).toPolygon();
                 }
             }]);
-        this.body.setVelocity(5, 20);
+
+
+        this.type = "PlayerEntity";
+        this.health = game.data.playerHealth;
+        this.body.setVelocity(game.data.playerMoveSpeed, 20);
+
         this.facing = "right";
+        this.now = new Date().getTime();
+        this.lastHit = this.now;
+        this.lastAttak = new Date().getTime();
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
-            this.type="PlayerEntity";
 
         this.renderable.addAnimation("idle", [78]);
         this.renderable.addAnimation("walk", [117, 118, 119, 120, 121, 122, 123, 124, 125], 80);
@@ -83,7 +90,7 @@ game.PlayerEntity = me.Entity.extend({
                 this.body.falling = false;
                 this.body.vel.y = -1;
             }
-        }else if (response.b.type === 'EnemyCreep') {
+        } else if (response.b.type === 'EnemyCreep') {
             var xdif = this.pos.x - response.b.pos.x;
             var ydif = this.pos.y - response.b.pos.y;
 
@@ -99,10 +106,10 @@ game.PlayerEntity = me.Entity.extend({
                 }
             }
 
-            if (this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= 1000
-                    && (Math.abs(ydif) <= 40)) {
+            if (this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= game.data.playerAttackTimer
+                    && (Math.abs("tower Hit") <= 40)) {
                 this.lastHit = this.now;
-                response.b.loseHaelth(1);
+                response.b.loseHaelth(game.data.playerAttack);
             }
         }
 
@@ -278,7 +285,7 @@ game.EnemyCreep = me.Entity.extend({
                 this.lastHit = this.now;
                 response.b.loseHealth(1);
             }
-        } 
+        }
     }
 
 });
