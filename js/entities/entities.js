@@ -27,8 +27,18 @@ game.PlayerEntity = me.Entity.extend({
         this.renderable.addAnimation("attack", [65, 66, 67, 68, 69, 70, 71, 72], 80);
         this.renderable.setCurrentAnimation("idle");
     },
+    
+    
     update: function(delta) {
-        if (me.input.isKeyPressed("right")) {
+        this.now = new Date().getTime();
+        
+        if(this.health <= 0){
+        this.dead = true;
+        
+       }
+        
+        
+         if (me.input.isKeyPressed("right")) {
             this.facing = "right";
             this.body.vel.x += this.body.accel.x * me.timer.tick;
             this.flipX(true);
@@ -61,19 +71,20 @@ game.PlayerEntity = me.Entity.extend({
             this.renderable.setCurrentAnimation("idle");
         }
 
-
-
-
         // me.collision.check(this, true, this.collideHandler.bind(this), true);    
+       
         this.body.update(delta);
-
 
         this._super(me.Entity, "update", [delta]);
         return true;
     },
+    
+    
     loseHealth: function(damage) {
         this.health = this.health - damage;
     },
+    
+    
     collideHandler: function(response) {
         if (response.b.type === 'EnemyBaseEntity') {
             var ydif = this.pos.y - response.b.pos.y;
@@ -135,6 +146,8 @@ game.PlayerBaseEntity = me.Entity.extend({
         this.body.onCollision = this.onCollision.bind(this);
         this.type = "PlayerBaseEntity";
     },
+    
+    
     update: function(delta) {
         if (this.health <= 0) {
             this.broken = true;
@@ -143,6 +156,8 @@ game.PlayerBaseEntity = me.Entity.extend({
         this._super(me.Entity, "update", [delta]);
         return true;
     },
+    
+    
     onCollision: function() {
 
     }
@@ -165,6 +180,8 @@ game.EnemyBaseEntity = me.Entity.extend({
         this.renderable.addAnimation("walk", [117, 118, 119, 120, 121, 122, 123, 124, 125], 80);
         this.renderable.setCurrentAnimation("idle");
     },
+    
+    
     update: function(delta) {
         if (me.input.isKeyPressed("right")) {
             this.body.vel.x += this.body.accel.x * me.timer.tick;
@@ -300,6 +317,11 @@ game.GameManager = Object.extend({
     update: function() {
         this.now = new Date().getTime();
 
+        if(game.data.player.dead){
+            me.game.world.removeChild(game.data.player);
+            me.state.current().resetPlayer(10, 0);
+        }
+        
         if (Math.round(this.now / 1000) % 10 === 0 && (this.now - this.lastCreep >= 1000)) {
             this.lastCreep = this.now;
             var creepe = me.pool.pull("EnemyCreep", 1000, 0, {});
