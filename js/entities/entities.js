@@ -19,6 +19,8 @@ game.PlayerEntity = me.Entity.extend({
         this.facing = "right";
         this.now = new Date().getTime();
         this.lastHit = this.now;
+        this.dead = false;
+        this.attack = game.data.playerAttack;
         this.lastAttak = new Date().getTime();
         me.game.viewport.follow(this.pos, me.game.viewport.AXIS.BOTH);
 
@@ -118,8 +120,16 @@ game.PlayerEntity = me.Entity.extend({
             }
 
             if (this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= game.data.playerAttackTimer
-                    && (Math.abs("tower Hit") <= 40)) {
+                    && (Math.abs(ydif) <= 40) &&
+                    (((xdif>0) && this.facing==="left") || ((xdif<0)) && this.facing==="right")
+                    ){
                 this.lastHit = this.now;
+                if(response.b.health <= game.data.playerAttack){
+                    game.data.gold += 1;
+                    console.log("Current gold: " + game.data.gold);
+                }
+                
+                
                 response.b.loseHaelth(game.data.playerAttack);
             }
         }
@@ -222,12 +232,12 @@ game.EnemyBaseEntity = me.Entity.extend({
         this.body.onCollision = this.onCollision.bind(this);
         this.type = "EnemyBaseEntity";
     },
-    update: function() {
+    update: function(delta) {
         if (this.health <= 0) {
             this.broken = true;
         }
         this.body.update(delta);
-        this._suuper(me.Entity, "update", [delta]);
+        this._super(me.Entity, "update", [delta]);
         return true;
     },
     onCollision: function() {
