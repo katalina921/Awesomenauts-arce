@@ -1,4 +1,5 @@
 game.PlayerEntity = me.Entity.extend({
+    
     init: function(x, y, settings) {
         this.setSuper();
         this.setPlayerTimers();
@@ -53,9 +54,9 @@ game.PlayerEntity = me.Entity.extend({
     
     update: function(delta) {
         this.now = new Date().getTime();
-        }
+        
 
-        this.dead = checkIfDead();
+        this.dead = this.checkIfDead();
         this.checkKeyPressesAndMove();
 
 
@@ -102,8 +103,7 @@ game.PlayerEntity = me.Entity.extend({
         }
 
         if (me.input.isKeyPressed("jump") && !this.body.jumping && !this.body.falling) {
-            this.body.jumping = true;
-            this.body.vel.y -= this.body.accel.y * me.timer.tick;
+            this.jump();
         }
     },
     
@@ -119,13 +119,25 @@ game.PlayerEntity = me.Entity.extend({
             this.flipX(false);
     },
     
+    jump: function(){
+        this.body.jumping = true;
+            this.body.vel.y -= this.body.accel.y * me.timer.tick;
+    },
+    
     loseHealth: function(damage) {
         this.health = this.health - damage;
     },
     
     collideHandler: function(response) {
         if (response.b.type === 'EnemyBaseEntity') {
-            var ydif = this.pos.y - response.b.pos.y;
+            this.collideWithEnemyBase(response);
+        } else if (response.b.type === 'EnemyCreep') {
+            this.collideWithEnemyCreep(response);
+        }
+    },
+    
+    collideWithEnemyBase: function(response){
+        var ydif = this.pos.y - response.b.pos.y;
             var xdif = this.pos.x - response.b.pos.x;
 
 
@@ -139,11 +151,24 @@ game.PlayerEntity = me.Entity.extend({
                 this.body.falling = false;
                 this.body.vel.y = -1;
             }
-        } else if (response.b.type === 'EnemyCreep') {
-            var xdif = this.pos.x - response.b.pos.x;
+    }
+    
+   collideWithEnemyCreep: function(response){
+      var xdif = this.pos.x - response.b.pos.x;
             var ydif = this.pos.y - response.b.pos.y;
 
-            if (xdif > 0) {
+           this.stopMovement(xdif);
+           
+       if (this.checkAttack(xdif, ydif)){
+               if (response.b.health <= game.data.playerAttack) {
+                    game.data.gold += 1;
+                    console.log("Current gold: " + game.data.gold);
+           }
+       }
+    }
+    
+    stopMovement: function(xdif){
+        if (xdif > 0) {
                 this.pos.x = this.pos.x + 1;
                 if (this.facing === "left") {
                     this.vel.x = 0;
@@ -154,22 +179,24 @@ game.PlayerEntity = me.Entity.extend({
                     this.vel.x = 0;
                 }
             }
-
-            if (this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= game.data.playerAttackTimer
+    },
+    
+    checkAttack: function(xdif, ydif){
+         this.hitCreep(response);
+    }
+      
+    hitCreep: function(response){
+        if (this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= game.data.playerAttackTimer
                     && (Math.abs(ydif) <= 40) &&
                     (((xdif > 0) && this.facing === "left") || ((xdif < 0)) && this.facing === "right")
                     ) {
                 this.lastHit = this.now;
-                if (response.b.health <= game.data.playerAttack) {
-                    game.data.gold += 1;
-                    console.log("Current gold: " + game.data.gold);
+                return true;
                 }
+                return false;
 
 
-                response.b.loseHaelth(game.data.playerAttack);
+                response.b.loseHealth(game.data.playerAttack);
             }
-        }
-
-    }
-
+    
 });
