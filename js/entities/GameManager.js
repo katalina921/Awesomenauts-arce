@@ -41,5 +41,18 @@ game.HeroDeathManager({
             me.game.world.removeChild(game.data.player);
             me.state.current().resetPlayer(10, 0);
         }
+    return true;
+    }
+    
+});
+
+game.ExperienceManager = Object.extend({
+    init: function(x, y, settings){
+        
+    },
+    
+    update: function(){
+        
+        return true;
     }
 });

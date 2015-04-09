@@ -26,7 +26,7 @@ game.PlayerBaseEntity = me.Entity.extend({
     update: function(delta) {
         if (this.health <= 0) {
             this.broken = true;
-            game.data.win = false;
+            game.data.win = true;
         }
         this.body.update(delta);
         this._super(me.Entity, "update", [delta]);
