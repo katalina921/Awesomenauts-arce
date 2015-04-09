@@ -1,7 +1,7 @@
 game.PlayerEntity = me.Entity.extend({
     
     init: function(x, y, settings) {
-        this.setSuper();
+        this.setSuper(x, y);
         this.setPlayerTimers();
         this.setAttributes();
         this.type = "PlayerEntity";
@@ -16,7 +16,7 @@ game.PlayerEntity = me.Entity.extend({
         this.renderable.setCurrentAnimation("idle");
     },
     
-    setSuper: function() {
+    setSuper: function(x, y) {
         this._super(me.Entity, 'init', [x, y, {
                 image: "player",
                 width: 64,
@@ -151,7 +151,7 @@ game.PlayerEntity = me.Entity.extend({
                 this.body.falling = false;
                 this.body.vel.y = -1;
             }
-    }
+    },
     
    collideWithEnemyCreep: function(response){
       var xdif = this.pos.x - response.b.pos.x;
@@ -165,7 +165,7 @@ game.PlayerEntity = me.Entity.extend({
                     console.log("Current gold: " + game.data.gold);
            }
        }
-    }
+    },
     
     stopMovement: function(xdif){
         if (xdif > 0) {
@@ -183,7 +183,7 @@ game.PlayerEntity = me.Entity.extend({
     
     checkAttack: function(xdif, ydif){
          this.hitCreep(response);
-    }
+    },
       
     hitCreep: function(response){
         if (this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= game.data.playerAttackTimer

@@ -14,13 +14,19 @@ game.PlayerBaseEntity = me.Entity.extend({
         this.health = 10;
         this.alwaysUpdate = true;
         this.body.onCollision = this.onCollision.bind(this);
+        
         this.type = "PlayerBaseEntity";
+        
+        this.renderable.addAnimation("idle", [0]);
+        this.renderable.addAnimation("broken", [1]);
+        this.renderable.setCurrentAnimation("idle");
     },
     
     
     update: function(delta) {
         if (this.health <= 0) {
             this.broken = true;
+            game.data.win = false;
         }
         this.body.update(delta);
         this._super(me.Entity, "update", [delta]);

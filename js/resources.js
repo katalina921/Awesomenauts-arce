@@ -4,9 +4,9 @@ game.resources = [
      * {name: "example", type:"image", src: "data/img/example.png"},
      */
 
-    {name: "background-tiles", type: "image", src: "data/img/background-tiles.png"},
+   {name: "background-tiles", type: "image", src: "data/img/background-tiles.png"},
     {name: "meta-tiles", type: "image", src: "data/img/meta-tiles.png"},
-    {name: "kirby-background1", type: "image", src: "data/img/kirby-background5.png"},
+    {name: "kirby-background5", type: "image", src: "data/img/kirbyb.jpg"},
     {name: "player", type:"image", src:"data/img/orcSpear.png"},
     {name: "tower", type:"image", src:"data/img/tower_round.svg.png"},
     {name: "creep1", type:"image", src:"data/img/brainmonster.png"},
