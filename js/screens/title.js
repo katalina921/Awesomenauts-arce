@@ -9,13 +9,13 @@ game.TitleScreen = me.ScreenObject.extend({
                
                me.game.world.addChild(new (me.Renderable.extend({
                    init: function(){
-                       this._super(me.Renderable, 'init', [510, 30, me.game.viewport.width, me.game.viewport.height]);
+                       this._super(me.Renderable, 'init', [270, 240, 300, 50]);
                        this.font = new me.Font("Arial", 46, "white");
                    },
                    
                    draw: function(renderer){
                        this.font.draw(renderer.getContext(),  "Awesomenauts!", 450, 130);
-                       this.font.draw(renderer.getContext(), "Press Start To Play", 250, 530);
+                       this.font.draw(renderer.getContext(), "START NEW GAME", this.pos.x, this.pos.y);
                    }
                })));
                
