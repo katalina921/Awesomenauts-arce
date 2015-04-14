@@ -31,7 +31,7 @@ game.GameTimerManager = Object.extend({
     }
 });
 
-game.HeroDeathManager({
+game.HeroDeathManager = Object.extend({
     init: function(x, y, settings){
         this.alwaysUpdate = true;
     },
@@ -70,6 +70,7 @@ game.ExperienceManager = Object.extend({
         
         this.gameOver = true;
         me.save.exp = game.data.exp;
+        me.save.exp2 = 4;
     }
 
 });
