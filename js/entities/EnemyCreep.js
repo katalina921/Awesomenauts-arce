@@ -11,9 +11,9 @@ game.EnemyCreep = me.Entity.extend({
                 }
             }]);
 
-        this.health = 10;
-        this.attacking = false;
+        this.health = game.dat.enemyCreepHealth;
         this.alwaysUpdate = true;
+        this.attacking = false;
         this.lastAttacking = new Date().getTime();
         this.lastHit = new Date().getTime();
         this.now = new Date().getTime();
