@@ -11,7 +11,7 @@ game.EnemyCreep = me.Entity.extend({
                 }
             }]);
 
-        this.health = game.dat.enemyCreepHealth;
+        this.health = game.data.enemyCreepHealth;
         this.alwaysUpdate = true;
         this.attacking = false;
         this.lastAttacking = new Date().getTime();
@@ -24,15 +24,18 @@ game.EnemyCreep = me.Entity.extend({
         this.renderable.addAnimation("walk", [3, 4, 5], 80);
         this.renderable.setCurrentAnimation("walk");
     },
+    
     loseHealth: function(damage) {
         this.health = this.health - damage;
+        console.log("health damage");
     },
+    
     update: function(delta) {
         if (this.health <= 0) {
             me.game.world.removeChild(this);
         }
 
-
+        this.now = new Date().getTime();
         this.body.vel.x -= this.body.accel.x * me.timer.tick;
 
         me.collision.check(this, true, this.collideHandler.bind(this), true);
@@ -42,6 +45,7 @@ game.EnemyCreep = me.Entity.extend({
         this._super(me.Entity, "update", [delta]);
         return true;
     },
+    
     collideHandler: function(response) {
         if (response.b.type === 'PlayerBase') {
             this.attacking = true;

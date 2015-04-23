@@ -1,4 +1,5 @@
 game.PlayerEntity = me.Entity.extend({
+    
     init: function(x, y, settings) {
         this.setSuper(x, y);
         this.setPlayerTimers();
@@ -17,13 +18,13 @@ game.PlayerEntity = me.Entity.extend({
     
     setSuper: function(x, y) {
         this._super(me.Entity, 'init', [x, y, {
-                image: "player",
-                width: 64,
-                height: 64,
-                spritewidth: "64",
-                spriteheight: "64",
+                image: "kirbyplayer",
+                width: 110,
+                height: 70,
+                spritewidth: "110",
+                spriteheight: "70",
                 getShape: function() {
-                    return(new me.Rect(0, 0, 64, 64)).toPolygon();
+                    return(new me.Rect(0, 0, 70, 110)).toPolygon();
                 }
             }]);
     },
@@ -41,9 +42,10 @@ game.PlayerEntity = me.Entity.extend({
     },
     
     addAnimation: function() {
-        this.renderable.addAnimation("idle", [78]);
-        this.renderable.addAnimation("walk", [117, 118, 119, 120, 121, 122, 123, 124, 125], 80);
-        this.renderable.addAnimation("attack", [65, 66, 67, 68, 69, 70, 71, 72], 80);
+        this.renderable.addAnimation("idle", [1]);
+        
+        this.renderable.addAnimation("walk", [4, 5, 6, 7], 80);
+        this.renderable.addAnimation("attack", [8, 9, 10, 11], 80);
     },
     
     setFlags: function() {
@@ -78,7 +80,7 @@ game.PlayerEntity = me.Entity.extend({
             this.renderable.setCurrentAnimation("idle");
         }
 
-        // me.collision.check(this, true, this.collideHandler.bind(this), true);    
+        me.collision.check(this, true, this.collideHandler.bind(this), true);    
 
         this.body.update(delta);
 
@@ -108,15 +110,15 @@ game.PlayerEntity = me.Entity.extend({
     },
     
     moveRight: function() {
-        this.facing = "right";
         this.body.vel.x += this.body.accel.x * me.timer.tick;
-        this.flipX(true);
+        this.facing = "right";
+        this.flipX(false);
     },
     
     moveLeft: function() {
-        this.facing = "left";
         this.body.vel.x -= this.body.accel.x * me.timer.tick;
-        this.flipX(false);
+        this.facing = "left";
+        this.flipX(true);
     },
     
     jump: function() {
@@ -129,6 +131,7 @@ game.PlayerEntity = me.Entity.extend({
     },
     
     collideHandler: function(response) {
+        
         if (response.b.type === 'EnemyBaseEntity') {
             this.collideWithEnemyBase(response);
         } else if (response.b.type === 'EnemyCreep') {
@@ -178,7 +181,7 @@ game.PlayerEntity = me.Entity.extend({
         } else {
             this.pos.x = this.pos.x - 1;
             if (this.facing === "right") {
-                this.vel.x = 0;
+                this.body.vel.x = 0;
             }
         }
     },
