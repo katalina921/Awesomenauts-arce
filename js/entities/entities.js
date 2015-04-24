@@ -42,8 +42,8 @@ game.PlayerEntity = me.Entity.extend({
     },
     
     addAnimation: function() {
+        this.renderable.addAnimation("jump", [0]);
         this.renderable.addAnimation("idle", [1]);
-        
         this.renderable.addAnimation("walk", [4, 5, 6, 7], 80);
         this.renderable.addAnimation("attack", [8, 9, 10, 11], 80);
     },
@@ -106,6 +106,7 @@ game.PlayerEntity = me.Entity.extend({
 
         if (me.input.isKeyPressed("jump") && !this.body.jumping && !this.body.falling) {
             this.jump();
+            this.renderable.setCurrentAnimation("jump");
         }
     },
     
