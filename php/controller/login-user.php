@@ -15,9 +15,9 @@ if($query->num_rows == 1){
         header("Location: " . $path . "index.php");
     }
     else{
-        echo "<p> Invalid username and password1</p>";
+        echo " Invalid username and password";
     }
 }
 else{
-    echo "<p> Invalid username and password2</p>";
+    echo "Invalid username and password";
 }
