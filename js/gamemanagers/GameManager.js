@@ -1,8 +1,13 @@
+
+
 game.ExperienceManager = Object.extend({
     init: function(x, y, settings) {
         this.alwaysUpdate = true;
         this.gameover = false;
     },
+    
+//    making the game tell you when you lose or win
+    
     update: function() {
         if (game.data.win === true && !this.gameover) {
             this.gameOver(true);
@@ -13,6 +18,9 @@ game.ExperienceManager = Object.extend({
         }
         return true;
     },
+    
+//    game over setting
+    
     gameover: function(win) {
         if (win) {
             game.data.exp += 10;
@@ -23,6 +31,7 @@ game.ExperienceManager = Object.extend({
         this.gameOver = true;
         me.save.exp = game.data.exp;
         
+//        gettinng php login or register to work
         
         $.ajax({
                       type: "POST",
@@ -35,18 +44,18 @@ game.ExperienceManager = Object.extend({
                           exp4: game.data.exp4,
                       },
                       dataType: "text"
-                   });
+                   })
                            .success(function(response){
                                if(response==="true"){
-                                   me.state.change(MENU);
+                                   me.state.change(me.state.MENU);
                                }else{
                                    alert(response);
                                }
-                           }),
-                           .fail(function(reponse){
-                              alret("Fail"); 
+                           })
+                           .fail(function(response){
+                              alert("Fail"); 
                            });
                         
-
+                        }
 });
 

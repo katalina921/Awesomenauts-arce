@@ -1,3 +1,5 @@
+//setting up player settings
+
 game.PlayerEntity = me.Entity.extend({
     
     init: function(x, y, settings) {
@@ -16,6 +18,8 @@ game.PlayerEntity = me.Entity.extend({
         this.renderable.setCurrentAnimation("idle");
     },
     
+//    adding player to my game
+    
     setSuper: function(x, y) {
         this._super(me.Entity, 'init', [x, y, {
                 image: "kirbyplayer",
@@ -29,17 +33,23 @@ game.PlayerEntity = me.Entity.extend({
             }]);
     },
     
+//    setting player timing
+    
     setPlayerTimers: function() {
         this.now = new Date().getTime();
         this.lastHit = this.now;
         this.lastAttak = new Date().getTime();
     },
     
+//    player health/speed
+    
     setAttributes: function() {
         this.health = game.data.playerHealth;
         this.body.setVelocity(game.data.playerMoveSpeed, 20);
         this.attack = game.data.playerAttack;
     },
+    
+//    adding animation to player
     
     addAnimation: function() {
         this.renderable.addAnimation("jump", [0]);
@@ -62,7 +72,7 @@ game.PlayerEntity = me.Entity.extend({
         this.checkKeyPressesAndMove();
 
 
-
+//setting attack
 
 
         if (me.input.isKeyPressed("attack")) {
@@ -87,6 +97,7 @@ game.PlayerEntity = me.Entity.extend({
         this._super(me.Entity, "update", [delta]);
         return true;
     },
+//    dying settings
     
     checkIfDead: function() {
         if (this.health <= 0) {
@@ -94,6 +105,8 @@ game.PlayerEntity = me.Entity.extend({
         }
         return false;
     },
+    
+//    checking if my keys work
     
     checkKeyPressesAndMove: function() {
         if (me.input.isKeyPressed("right")) {
@@ -109,6 +122,8 @@ game.PlayerEntity = me.Entity.extend({
             this.renderable.setCurrentAnimation("jump");
         }
     },
+    
+//    setting speed to player movement
     
     moveRight: function() {
         this.body.vel.x += this.body.accel.x * me.timer.tick;
@@ -130,6 +145,8 @@ game.PlayerEntity = me.Entity.extend({
     loseHealth: function(damage) {
         this.health = this.health - damage;
     },
+    
+//    checking collision to enemy base
     
     collideHandler: function(response) {
         
@@ -186,6 +203,8 @@ game.PlayerEntity = me.Entity.extend({
             }
         }
     },
+    
+//    creeper atttack
     
     checkAttack: function(xdif, ydif) {
        if (this.renderable.isCurrentAnimation("attack") && this.now - this.lastHit >= 1000

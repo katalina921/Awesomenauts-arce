@@ -1,7 +1,12 @@
+//title screen settings
+
 game.TitleScreen = me.ScreenObject.extend({
     /**	
      *  action to perform on state change
      */
+    
+//    setting your title screen image
+    
     onResetEvent: function() {
         me.game.world.addChild(new me.Sprite(0, 0, me.loader.getImage('title-screen4')), -10); //TODO
 
@@ -25,6 +30,7 @@ game.TitleScreen = me.ScreenObject.extend({
             }
         })));
 
+        
         me.game.world.addChild(new (me.Renderable.extend({
             init: function() {
                 this._super(me.Renderable, 'init', [380, 340, 250, 50]);

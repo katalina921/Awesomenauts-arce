@@ -42,6 +42,8 @@ game.PlayScreen = me.ScreenObject.extend({
         me.game.world.removeChild(this.HUD);
     },
     
+//    setting where player will spawn
+    
     resetPlayer: function(x, y){
          game.data.player = me.pool.pull("player", x, y, {});
         me.game.world.addChild(game.data.player, 5);

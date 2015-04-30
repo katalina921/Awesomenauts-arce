@@ -4,6 +4,8 @@ game.resources = [
      * {name: "example", type:"image", src: "data/img/example.png"},
      */
 
+//     linkinng your images that you use for your game
+
     {name: "background-tiles", type: "image", src: "data/img/background-tiles.png"},
     {name: "meta-tiles", type: "image", src: "data/img/meta-tiles.png"},
     {name: "kirbyb", type: "image", src: "data/img/kirbyb.jpg"},
